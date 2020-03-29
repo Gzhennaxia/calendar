@@ -1,0 +1,12 @@
+server:
+  port: 8000
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:/Users/gzhennaxia/Documents/GitHub/calendar/src/main/java/com/example/calendar/db/calendar.sqlite
+    username:
+    password:
+mybatis:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

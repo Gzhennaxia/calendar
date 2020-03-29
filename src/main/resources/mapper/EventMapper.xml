@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.calendar.mapper.EventMapper">
+
+    <resultMap id="baseMap" type="com.example.calendar.entity.Event">
+        <id column="id" property="id"/>
+        <result column="event_id" property="eventId"/>
+        <result column="description" property="description"/>
+        <result column="link_url" property="linkUrl"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+    <insert id="insertList" useGeneratedKeys="true" keyProperty="id">
+        insert into events('event_id', 'title', 'description', 'link_url', 'start_time', 'end_time', 'create_date',
+        'update_date')values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.eventId}, #{item.title}, #{item.description}, #{item.linkUrl}, #{item.startTime}, #{item.endTime},
+            #{item.createDate}, #{item.updateDate})
+        </foreach>
+    </insert>
+
+    <select id="selectList" resultMap="baseMap">
+        select * from events where event_id in
+        <foreach collection="eventIds" item="eventId" open="(" separator="," close=")">
+            #{eventId}
+        </foreach>
+    </select>
+</mapper>

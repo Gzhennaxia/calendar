@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.calendar.mapper.CalendarMapper">
+
+    <insert id="insertList" useGeneratedKeys="true" keyProperty="id">
+        insert into calendar('calendar_id', 'name') values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.calendarId}, #{item.name})
+        </foreach>
+    </insert>
+
+    <select id="selectByList" resultType="com.example.calendar.entity.Calendar">
+        select * from calendar where id in
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item.id}
+        </foreach>
+    </select>
+</mapper>

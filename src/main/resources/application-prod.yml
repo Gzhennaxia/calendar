@@ -1,0 +1,10 @@
+server:
+  port: 8000
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite::resource:db/calendar.sqlite
+    username:
+    password:
+mybatis:
+  mapper-locations: classpath:/mapper/*Mapper.xml
