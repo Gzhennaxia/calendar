@@ -3,7 +3,10 @@ server:
 spring:
   datasource:
     driver-class-name: org.sqlite.JDBC
-    url: jdbc:sqlite:/Users/gzhennaxia/Documents/GitHub/calendar/src/main/java/com/example/calendar/db/calendar.sqlite
+    # home
+#    url: jdbc:sqlite:/Users/gzhennaxia/Documents/GitHub/calendar/src/main/java/com/example/calendar/db/calendar.sqlite
+    # company
+    url: jdbc:sqlite:/Users/libo/Documents/GitHub/calendar/src/main/java/com/example/calendar/db/calendar.sqlite
     username:
     password:
 mybatis:

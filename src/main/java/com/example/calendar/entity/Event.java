@@ -39,10 +39,18 @@ public class Event {
             this.updateDate = new Date(event.getUpdated().getValue());
         }
         if (event.getStart() != null) {
-            this.startTime = new Date(event.getStart().getDateTime().getValue());
+            if (event.getStart().getDateTime() == null) {
+                this.startTime = new Date(event.getStart().getDate().getValue());
+            } else {
+                this.startTime = new Date(event.getStart().getDateTime().getValue());
+            }
         }
         if (event.getEnd() != null) {
-            this.endTime = new Date(event.getEnd().getDateTime().getValue());
+            if (event.getEnd().getDateTime() == null) {
+                this.endTime = new Date(event.getEnd().getDate().getValue());
+            } else {
+                this.endTime = new Date(event.getEnd().getDateTime().getValue());
+            }
         }
     }
 }

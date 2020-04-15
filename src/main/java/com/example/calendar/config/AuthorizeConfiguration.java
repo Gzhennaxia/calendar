@@ -5,7 +5,7 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -31,11 +31,28 @@ public class AuthorizeConfiguration {
     }
 
     @Bean
-    public HttpTransport transport() {
-        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 1087));
-        return new NetHttpTransport.Builder()
-                .setProxy(proxy)
-                .build();
+    public HttpTransport transport() throws IOException {
+        NetHttpTransport transport = new NetHttpTransport.Builder().build();
+
+        HttpRequestFactory requestFactory = transport.createRequestFactory();
+        GenericUrl googleUrl = new GenericUrl("https://www.google.com/");
+
+        HttpRequest request = requestFactory.buildGetRequest(googleUrl);
+        HttpResponse response = request.execute();
+        if (response.isSuccessStatusCode()) {
+            return transport;
+        } else {
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 1087));
+            transport = new NetHttpTransport.Builder().setProxy(proxy).build();
+            requestFactory = transport.createRequestFactory();
+            request = requestFactory.buildGetRequest(googleUrl);
+            response = request.execute();
+            if (response.isSuccessStatusCode()) {
+                return transport;
+            } else {
+                throw new IOException("Cannot access google, check vpn.");
+            }
+        }
     }
 
     @Bean

@@ -32,12 +32,13 @@ public class EventsServiceImpl implements EventsService {
         int maxResults = 10;
         String pageToken = null;
         do {
-            Events events = service.events().list(calendarId).setPageToken(pageToken).setMaxResults(maxResults).execute();
+            Events events = service.events()
+                    .list(calendarId)
+                    .setPageToken(pageToken)
+//                    .setMaxResults(maxResults)
+                    .execute();
             List<Event> items = events.getItems();
             saveEvents(items);
-//            for (Event event : items) {
-//                System.out.println(event.getSummary());
-//            }
             pageToken = events.getNextPageToken();
         } while (pageToken != null);
     }
@@ -69,6 +70,7 @@ public class EventsServiceImpl implements EventsService {
             Event next = iterator.next();
             for (com.example.calendar.entity.Event existedEvent : existedEvents) {
                 if (next.getId().equals(existedEvent.getEventId())) {
+                    // 判断是否需要更新 todo
                     iterator.remove();
                     break;
                 }
@@ -86,6 +88,7 @@ public class EventsServiceImpl implements EventsService {
         do {
             Events events = service.events().list(calendarId).setPageToken(pageToken).execute();
             List<Event> items = events.getItems();
+            saveEvents(items);
             for (Event event : items) {
                 System.out.println(event.getSummary());
             }
