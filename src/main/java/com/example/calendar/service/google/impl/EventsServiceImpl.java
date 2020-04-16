@@ -2,6 +2,7 @@ package com.example.calendar.service.google.impl;
 
 import com.example.calendar.mapper.EventMapper;
 import com.example.calendar.service.google.EventsService;
+import com.example.calendar.utils.DateUtils;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
@@ -44,6 +45,26 @@ public class EventsServiceImpl implements EventsService {
     }
 
     @Override
+    public void getLatestMonthList(String calendarId) throws IOException {
+        getListFormGoogle(calendarId, DateUtils.firstMomentOfMonth());
+    }
+
+    @Override
+    public void getLatestWeekList(String calendarId) throws IOException {
+        getListFormGoogle(calendarId, DateUtils.firstMomentOfWeek());
+    }
+
+    @Override
+    public void getYesterdayList(String calendarId) throws IOException {
+        getListFormGoogle(calendarId, DateUtils.firstMomentOfYesterday());
+    }
+
+    @Override
+    public void getTodayList(String calendarId) throws IOException {
+        getListFormGoogle(calendarId, DateUtils.firstMomentOfToday());
+    }
+
+    @Override
     public void getListFormGoogle(String calendarId, Date timeMin) throws IOException {
         String pageToken = null;
         do {
@@ -68,14 +89,18 @@ public class EventsServiceImpl implements EventsService {
         Iterator<Event> iterator = events.iterator();
         while (iterator.hasNext()) {
             Event next = iterator.next();
+            boolean existed = false;
             for (com.example.calendar.entity.Event existedEvent : existedEvents) {
                 if (next.getId().equals(existedEvent.getEventId())) {
                     // 判断是否需要更新 todo
                     iterator.remove();
+                    existed = true;
                     break;
                 }
             }
-            need2InsertedList.add(new com.example.calendar.entity.Event(next));
+            if (!existed) {
+                need2InsertedList.add(new com.example.calendar.entity.Event(next));
+            }
         }
         if (!events.isEmpty()) {
             eventMapper.insertList(need2InsertedList);

@@ -28,4 +28,36 @@ public class GoogleEventsController {
         return "success";
     }
 
+    @GoogleOAuth
+    @GetMapping("/list/month")
+    @ResponseBody
+    public String listMonth(@RequestParam("calendarId") String calendarId) throws IOException {
+        eventsService.getLatestMonthList(calendarId);
+        return "success";
+    }
+
+    @GoogleOAuth
+    @GetMapping("/list/week")
+    @ResponseBody
+    public String listWeek(@RequestParam("calendarId") String calendarId) throws IOException {
+        eventsService.getLatestWeekList(calendarId);
+        return "success";
+    }
+
+    @GoogleOAuth
+    @GetMapping("/list/yesterday")
+    @ResponseBody
+    public String listYesterday(@RequestParam("calendarId") String calendarId) throws IOException {
+        eventsService.getYesterdayList(calendarId);
+        return "success";
+    }
+
+    @GoogleOAuth
+    @GetMapping("/list/today")
+    @ResponseBody
+    public String listToday(@RequestParam("calendarId") String calendarId) throws IOException {
+        eventsService.getTodayList(calendarId);
+        return "success";
+    }
+
 }
