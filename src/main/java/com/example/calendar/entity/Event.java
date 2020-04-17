@@ -27,11 +27,14 @@ public class Event {
 
     private Date updateDate;
 
+    private Integer source;
+
     public Event(com.google.api.services.calendar.model.Event event) {
         this.eventId = event.getId();
         this.title = event.getSummary();
         this.description = event.getDescription();
         this.linkUrl = event.getHtmlLink();
+        this.source = 1; // 换成字典表数据 todo
         if (event.getStart() != null) {
             this.createDate = new Date(event.getCreated().getValue());
         }
