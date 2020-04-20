@@ -29,12 +29,22 @@ public class Event {
 
     private Integer source;
 
+    private Integer score;
+
+    private String scoreNote;
+
+    private Integer delFlag;
+
+    private Integer status;
+
     public Event(com.google.api.services.calendar.model.Event event) {
         this.eventId = event.getId();
         this.title = event.getSummary();
         this.description = event.getDescription();
         this.linkUrl = event.getHtmlLink();
         this.source = 1; // 换成字典表数据 todo
+        this.delFlag = 0; // 换成字典表数据 todo
+        this.status = 0; // 换成字典表数据 todo
         if (event.getStart() != null) {
             this.createDate = new Date(event.getCreated().getValue());
         }
